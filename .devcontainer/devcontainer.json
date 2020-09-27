@@ -1,0 +1,25 @@
+{
+	"name": "Node.js & TypeScript",
+	"build": {
+		"dockerfile": "../Dockerfile",
+		"context": "..",
+		"target": "devcontainer"
+	},
+	"settings": {
+		"terminal.integrated.shell.linux": "/bin/zsh"
+	},
+
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"dbaeumer.vscode-eslint",
+		"ms-vscode.vscode-typescript-tslint-plugin",
+        "octref.vetur",
+		"dariofuzinato.vue-peek",
+		"ms-azuretools.vscode-docker"
+	],
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [8080],
+
+	"remoteUser": "node"
+}
