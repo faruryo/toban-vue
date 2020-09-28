@@ -15,7 +15,8 @@
 		"ms-vscode.vscode-typescript-tslint-plugin",
         "octref.vetur",
 		"dariofuzinato.vue-peek",
-		"ms-azuretools.vscode-docker"
+		"ms-azuretools.vscode-docker",
+		"apollographql.vscode-apollo"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
