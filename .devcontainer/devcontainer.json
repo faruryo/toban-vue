@@ -9,20 +9,22 @@
 	"remoteEnv": {
 		"VUE_APP_GRAPHQL_HTTP": "http://toban-api.toban.room-402.faru.jp/graphql"
 	},
-
+	"mounts": [
+		"source=tovan-vue-history,target=/commandhistory,type=volume"
+	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [8080, 4000],
-
-
+	"forwardPorts": [
+		8080,
+		4000
+	],
 	"settings": {
 		"terminal.integrated.shell.linux": "/bin/zsh"
 	},
-
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"dbaeumer.vscode-eslint",
 		"ms-vscode.vscode-typescript-tslint-plugin",
-        "octref.vetur",
+		"octref.vetur",
 		"dariofuzinato.vue-peek",
 		"ms-azuretools.vscode-docker",
 		"apollographql.vscode-apollo"

@@ -19,7 +19,11 @@ RUN apt-get update \
 
 RUN npm install -g @vue/cli@4.5.6
 
+RUN mkdir /commandhistory \
+    && touch /commandhistory/.zsh_history \
+    && chown -R $USERNAME /commandhistory
+
 USER $USERNAME
-RUN cp /etc/zsh/newuser.zshrc.recommended ~/.zshrc
+RUN sed 's/~\/\.zsh_history/\/commandhistory\/.zsh_history/' /etc/zsh/newuser.zshrc.recommended > ~/.zshrc
 
 ENTRYPOINT ["/bin/zsh"]
