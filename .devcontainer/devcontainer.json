@@ -5,6 +5,15 @@
 		"context": "..",
 		"target": "devcontainer"
 	},
+	"containerUser": "node",
+	"remoteEnv": {
+		"VUE_APP_GRAPHQL_HTTP": "http://toban-api.toban.room-402.faru.jp/graphql"
+	},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [8080, 4000],
+
+
 	"settings": {
 		"terminal.integrated.shell.linux": "/bin/zsh"
 	},
@@ -17,10 +26,5 @@
 		"dariofuzinato.vue-peek",
 		"ms-azuretools.vscode-docker",
 		"apollographql.vscode-apollo"
-	],
-
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [8080],
-
-	"remoteUser": "node"
+	]
 }

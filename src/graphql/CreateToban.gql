@@ -1,0 +1,9 @@
+#import "./TobanFragment.gql"
+
+mutation createToban ($input: CreateTobanInput!) {
+  createToban(
+    input: $input
+  ) {
+    ...Toban
+  }
+}

@@ -1,150 +1,103 @@
 <template>
-  <div class="apollo-example">
-    <!-- Cute tiny form -->
-    <div class="form">
-      <label for="field-name" class="label">Name</label>
-      <input
-        v-model="name"
-        placeholder="Type a name"
-        class="input"
-        id="field-name"
-      >
+  <div class="toban-example">
+
+    <div id="app">
+      <table>
+        <!-- テーブルヘッダー -->
+        <thead>
+          <tr>
+            <th class="id">ID</th>
+            <th class="name">名前</th>
+            <th class="description">概要</th>
+            <th class="button">有効</th>
+            <th class="button">削除</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="toban in tobans" v-bind:key="toban.id">
+            <th>{{ toban.id }}</th>
+            <td>{{ toban.name }}</td>
+            <td>{{ toban.description }}</td>
+            <td class="state">
+              <!-- 状態変更ボタンのモック -->
+              <button v-if="toban.enabled">enabled</button>
+              <button v-else>disabled</button>
+            </td>
+            <td class="button">
+              <!-- 削除ボタンのモック -->
+              <button v-on:click="deleteToban(toban)">削除</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
-    <!-- Apollo watched Graphql query -->
-    <ApolloQuery
-      :query="require('../graphql/HelloWorld.gql')"
-      :variables="{ name }"
-    >
-      <template slot-scope="{ result: { loading, error, data } }">
-        <!-- Loading -->
-        <div v-if="loading" class="loading apollo">Loading...</div>
-
-        <!-- Error -->
-        <div v-else-if="error" class="error apollo">An error occured</div>
-
-        <!-- Result -->
-        <div v-else-if="data" class="result apollo">{{ data.hello }}</div>
-
-        <!-- No result -->
-        <div v-else class="no-result apollo">No result :(</div>
-      </template>
-    </ApolloQuery>
-
-    <!-- Tchat example -->
-    <ApolloQuery
-      :query="require('../graphql/Messages.gql')"
-    >
-      <ApolloSubscribeToMore
-        :document="require('../graphql/MessageAdded.gql')"
-        :update-query="onMessageAdded"
-      />
-
-      <div slot-scope="{ result: { data } }">
-        <template v-if="data">
-          <div
-            v-for="message of data.messages"
-            :key="message.id"
-            class="message"
-          >
-            {{ message.text }}
-          </div>
-        </template>
-      </div>
-    </ApolloQuery>
-
     <ApolloMutation
-      :mutation="require('../graphql/AddMessage.gql')"
+      :mutation="require('../graphql/CreateToban.gql')"
       :variables="{
         input: {
-          text: newMessage,
+          name: newName,
+          description: '概要',
+          interval: 'DAILY',
+          deadlineHour: 23,
+          deadlineWeekDay: 'MONDAY',
+          deadlineWeek: 0,
         },
       }"
       class="form"
-      @done="newMessage = ''"
+      @done="newName = ''"
     >
       <template slot-scope="{ mutate }">
         <form v-on:submit.prevent="formValid && mutate()">
-          <label for="field-message">Message</label>
+          <label for="field-toban">Toban</label>
           <input
-            id="field-message"
-            v-model="newMessage"
-            placeholder="Type a message"
+            id="field-toban"
+            v-model="newName"
+            placeholder="Type a toban name"
             class="input"
           >
         </form>
       </template>
     </ApolloMutation>
-
-    <div class="images">
-      <div
-        v-for="file of files"
-        :key="file.id"
-        class="image-item"
-      >
-        <img :src="`${$filesRoot}/${file.path}`" class="image"/>
-      </div>
-    </div>
-
-    <div class="image-input">
-      <label for="field-image">Image</label>
-      <input
-        id="field-image"
-        type="file"
-        accept="image/*"
-        required
-        @change="onUploadImage"
-      >
-    </div>
   </div>
 </template>
 
 <script>
-import FILES from '../graphql/Files.gql'
-import UPLOAD_FILE from '../graphql/UploadFile.gql'
+import TOBANS from '../graphql/Tobans.gql'
+import DELETE_TOBAN from '../graphql/DeleteToban.gql'
 
 export default {
   data () {
     return {
       name: 'Anne',
-      newMessage: '',
+      newName: '',
     }
   },
 
   apollo: {
-    files: FILES,
+    tobans: {
+      query: TOBANS,
+    },
   },
 
   computed: {
     formValid () {
-      return this.newMessage
+      return this.newName
     },
   },
 
   methods: {
-    onMessageAdded (previousResult, { subscriptionData }) {
-      return {
-        messages: [
-          ...previousResult.messages,
-          subscriptionData.data.messageAdded,
-        ],
-      }
+    deleteToban: function(toban) {
+      console.log(toban)
+      this.$apollo.mutate({
+            mutation: DELETE_TOBAN,
+            variables: {
+              id: toban.id
+            }
+          }).then(() => {
+            this.$apollo.queries.tobans.refetch()
+          })
     },
-
-    async onUploadImage ({ target }) {
-      if (!target.validity.valid) return
-      await this.$apollo.mutate({
-        mutation: UPLOAD_FILE,
-        variables: {
-          file: target.files[0],
-        },
-        update: (store, { data: { singleUpload } }) => {
-          const data = store.readQuery({ query: FILES })
-          data.files.push(singleUpload)
-          store.writeQuery({ query: FILES, data })
-        },
-      })
-    }
   },
 }
 </script>
@@ -153,7 +106,7 @@ export default {
 .form,
 .input,
 .apollo,
-.message {
+.toban {
   padding: 12px;
 }
 
@@ -162,38 +115,7 @@ label {
   margin-bottom: 6px;
 }
 
-.input {
-  font-family: inherit;
-  font-size: inherit;
-  border: solid 2px #ccc;
-  border-radius: 3px;
-}
-
 .error {
   color: red;
-}
-
-.images {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 300px);
-  grid-auto-rows: 300px;
-  grid-gap: 10px;
-}
-
-.image-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #ccc;
-  border-radius: 8px;
-}
-
-.image {
-  max-width: 100%;
-  max-height: 100%;
-}
-
-.image-input {
-  margin: 20px;
 }
 </style>

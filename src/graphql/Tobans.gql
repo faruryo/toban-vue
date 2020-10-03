@@ -1,0 +1,11 @@
+query Tobans {
+  tobans {
+    id
+    name
+    description
+    interval
+    deadlineHour
+    deadlineWeekDay
+    deadlineWeek
+  }
+}

@@ -1,0 +1,13 @@
+fragment Toban on Toban {
+    id
+    name
+    description
+    interval
+    deadlineHour
+    deadlineWeekDay
+    deadlineWeek
+    enabled
+    tobanMemberSequence
+    updatedAt
+    createdAt
+}

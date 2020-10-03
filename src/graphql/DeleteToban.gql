@@ -1,0 +1,3 @@
+mutation deleteToban ($id: ID!) {
+  deleteToban(id: $id)
+}

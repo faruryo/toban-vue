@@ -9,7 +9,7 @@ WORKDIR /app
 
 # ---------------------------------------------------------
 FROM base AS devcontainer
-ARG USERNAME
+ARG USERNAME=node
 
 USER root
 RUN apt-get update \
@@ -20,7 +20,6 @@ RUN apt-get update \
 RUN npm install -g @vue/cli@4.5.6
 
 USER $USERNAME
-
 RUN cp /etc/zsh/newuser.zshrc.recommended ~/.zshrc
 
 ENTRYPOINT ["/bin/zsh"]
