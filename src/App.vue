@@ -5,22 +5,22 @@
       <div class="main-tab__item">Weekly</div>
       <div class="main-tab__item">Setting</div>
     </div>
-    <ApolloExample msg="Welcome to Toban"/>
+    <ApolloExample msg="Welcome to Toban" />
   </div>
 </template>
 
 <script>
-import ApolloExample from './components/ApolloExample.vue'
+import ApolloExample from "./components/ApolloExample.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     ApolloExample
   }
-}
+};
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

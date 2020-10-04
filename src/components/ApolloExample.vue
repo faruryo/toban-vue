@@ -1,7 +1,6 @@
 <template>
   <div class="toban-example">
-
-    <div id="app">
+    <div>
       <table>
         <!-- テーブルヘッダー -->
         <thead>
@@ -23,9 +22,8 @@
               <button v-if="toban.enabled">enabled</button>
               <button v-else>disabled</button>
             </td>
-            <td class="button">
-              <!-- 削除ボタンのモック -->
-              <button v-on:click="deleteToban(toban)">削除</button>
+            <td>
+              <button class="button__delete" v-on:click="deleteToban(toban)" />
             </td>
           </tr>
         </tbody>
@@ -50,12 +48,7 @@
       <template slot-scope="{ mutate }">
         <form v-on:submit.prevent="formValid && mutate()">
           <label for="field-toban">Toban</label>
-          <input
-            id="field-toban"
-            v-model="newName"
-            placeholder="Type a toban name"
-            class="input"
-          >
+          <input id="field-toban" v-model="newName" placeholder="Type a toban name" class="input" />
         </form>
       </template>
     </ApolloMutation>
@@ -63,46 +56,55 @@
 </template>
 
 <script>
-import TOBANS from '../graphql/Tobans.gql'
-import DELETE_TOBAN from '../graphql/DeleteToban.gql'
+import TOBANS from "../graphql/Tobans.gql";
+import DELETE_TOBAN from "../graphql/DeleteToban.gql";
 
 export default {
-  data () {
+  data() {
     return {
-      name: 'Anne',
-      newName: '',
-    }
+      name: "Anne",
+      newName: ""
+    };
   },
 
   apollo: {
     tobans: {
-      query: TOBANS,
-    },
+      query: TOBANS
+    }
   },
 
   computed: {
-    formValid () {
-      return this.newName
-    },
+    formValid() {
+      return this.newName;
+    }
   },
 
   methods: {
     deleteToban: function(toban) {
-      console.log(toban)
-      this.$apollo.mutate({
-            mutation: DELETE_TOBAN,
-            variables: {
-              id: toban.id
-            }
-          }).then(() => {
-            this.$apollo.queries.tobans.refetch()
-          })
-    },
-  },
-}
+      console.log(toban);
+      this.$apollo
+        .mutate({
+          mutation: DELETE_TOBAN,
+          variables: {
+            id: toban.id
+          }
+        })
+        .then(() => {
+          this.$apollo.queries.tobans.refetch();
+        });
+    }
+  }
+};
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+/* reset css */
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
 .form,
 .input,
 .apollo,
@@ -117,5 +119,15 @@ label {
 
 .error {
   color: red;
+}
+
+.button__delete {
+  background: url("../assets/icon/delete-24px.svg");
+  width: 24px;
+  height: 24px;
+
+  &:hover {
+    opacity: 0.5;
+  }
 }
 </style>
