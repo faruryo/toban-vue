@@ -62,7 +62,6 @@ import DELETE_TOBAN from "../graphql/DeleteToban.gql";
 export default {
   data() {
     return {
-      name: "Anne",
       newName: ""
     };
   },
@@ -105,11 +104,16 @@ button {
   cursor: pointer;
 }
 
-.form,
 .input,
 .apollo,
 .toban {
   padding: 12px;
+}
+
+.form {
+  padding: 12px;
+  display: flex;
+  border-top: solid 1px #888;
 }
 
 label {
