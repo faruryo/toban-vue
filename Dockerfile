@@ -1,29 +1,35 @@
 FROM node:14.11.0-buster AS base
 
+# ---------------------------------------------------------
+FROM base AS devcontainer
+
 ARG USERNAME=node
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
+ARG INSTALL_ZSH="true"
+ARG SOURCE_SOCKET=/var/run/docker-host.sock
+ARG TARGET_SOCKET=/var/run/docker.sock
+ARG ENABLE_NONROOT_DOCKER="true"
 
-USER $USERNAME
-WORKDIR /app
+COPY .devcontainer/scripts/*.sh /tmp/scripts/
 
-# ---------------------------------------------------------
-FROM base AS devcontainer
-ARG USERNAME=node
-
-USER root
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends zsh \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && /bin/bash /tmp/scripts/common-debian.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" "${UPGRADE_PACKAGES}" \
+    && /bin/bash /tmp/scripts/docker-debian.sh "${ENABLE_NONROOT_DOCKER}" "${SOURCE_SOCKET}" "${TARGET_SOCKET}" "${USERNAME}" \
+    && apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN npm install -g @vue/cli@4.5.6
 
 RUN mkdir /commandhistory \
     && touch /commandhistory/.zsh_history \
-    && chown -R $USERNAME /commandhistory
+    && chown -R $USERNAME /commandhistory \
+    && echo 'HISTFILE=~/.zsh_history/commandhistory/.zsh_history' >> /home/$USERNAME/.zshrc
 
 USER $USERNAME
+
+ENTRYPOINT [ "/bin/bash", "-v", "/usr/local/share/docker-init.sh" ]
+CMD [ "sleep", "infinity" ]
+
 RUN sed 's/~\/\.zsh_history/\/commandhistory\/.zsh_history/' /etc/zsh/newuser.zshrc.recommended > ~/.zshrc
 
 ENTRYPOINT ["/bin/zsh"]

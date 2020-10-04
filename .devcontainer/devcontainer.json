@@ -3,16 +3,18 @@
 	"build": {
 		"dockerfile": "../Dockerfile",
 		"context": "..",
-		"target": "devcontainer"
+		"target": "devcontainer",
+		"runArgs": ["--init"]
 	},
 	"containerUser": "node",
 	"remoteEnv": {
+		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}", // Docker用
 		"VUE_APP_GRAPHQL_HTTP": "http://toban-api.toban.room-402.faru.jp/graphql"
 	},
 	"mounts": [
-		"source=tovan-vue-history,target=/commandhistory,type=volume"
+		"source=tovan-vue-history,target=/commandhistory,type=volume",
+		"source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind" // Docker用
 	],
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
 		8080,
 		4000
@@ -20,13 +22,13 @@
 	"settings": {
 		"terminal.integrated.shell.linux": "/bin/zsh"
 	},
-	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"dbaeumer.vscode-eslint",
 		"ms-vscode.vscode-typescript-tslint-plugin",
 		"octref.vetur",
 		"dariofuzinato.vue-peek",
 		"ms-azuretools.vscode-docker",
-		"apollographql.vscode-apollo"
+		"apollographql.vscode-apollo",
+		"ms-azuretools.vscode-docker"
 	]
 }
