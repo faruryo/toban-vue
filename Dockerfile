@@ -30,6 +30,21 @@ USER $USERNAME
 ENTRYPOINT [ "/bin/bash", "-v", "/usr/local/share/docker-init.sh" ]
 CMD [ "sleep", "infinity" ]
 
-RUN sed 's/~\/\.zsh_history/\/commandhistory\/.zsh_history/' /etc/zsh/newuser.zshrc.recommended > ~/.zshrc
+# ---------------------------------------------------------
+FROM base AS build
 
-ENTRYPOINT ["/bin/zsh"]
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+RUN npm run build
+
+# ---------------------------------------------------------
+FROM nginx:1.19.2-alpine as production
+
+WORKDIR /app
+COPY --from=build /app/dist /usr/share/nginx/html
+
+EXPOSE 80
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
