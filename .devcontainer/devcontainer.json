@@ -9,7 +9,7 @@
 	"containerUser": "node",
 	"remoteEnv": {
 		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}", // Docker用
-		"VUE_APP_GRAPHQL_HTTP": "http://toban-api.toban.room-402.faru.jp/graphql"
+		"VUE_APP_GRAPHQL_HTTP": "http://toban-api.toban.room-402.faru.jp/api/graphql"
 	},
 	"mounts": [
 		"source=tovan-vue-history,target=/commandhistory,type=volume",
