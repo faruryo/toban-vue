@@ -1,4 +1,4 @@
-FROM node:14.11.0-buster AS base
+FROM node:14.15.0-buster AS base
 
 # ---------------------------------------------------------
 FROM base AS devcontainer
