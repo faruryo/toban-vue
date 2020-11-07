@@ -3,18 +3,19 @@
 	"build": {
 		"dockerfile": "../Dockerfile",
 		"context": "..",
-		"target": "devcontainer",
-		"runArgs": ["--init"]
+		"target": "devcontainer"
 	},
 	"containerUser": "node",
 	"remoteEnv": {
 		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}", // Docker用
 		"VUE_APP_GRAPHQL_HTTP": "http://toban-api.toban.room-402.faru.jp/graphql"
 	},
+	"runArgs": ["--init"],
 	"mounts": [
 		"source=tovan-vue-history,target=/commandhistory,type=volume",
 		"source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind" // Docker用
 	],
+	"overrideCommand": false,
 	"forwardPorts": [
 		8080,
 		4000
