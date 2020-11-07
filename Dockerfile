@@ -41,10 +41,10 @@ COPY . .
 RUN npm run build
 
 # ---------------------------------------------------------
-FROM nginx:1.19.2-alpine as production
+FROM nginx:1.19.3-alpine as production
 
 WORKDIR /app
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=build /app/dist /etc/nginx/html
 
 EXPOSE 80
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
