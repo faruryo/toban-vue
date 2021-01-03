@@ -9,7 +9,7 @@ npm install
 ```
 ## toban-apiのエンドポイントを指定
 ## devcontainerの場合はdevcontainer.jsonに記載する
-VUE_APP_GRAPHQL_HTTP="http://toban-api.toban.room-402.faru.jp/api/graphql"
+export VUE_APP_GRAPHQL_HTTP="http://toban-api.toban.room-402.faru.jp/api/graphql"
 
 npm run serve
 ```
