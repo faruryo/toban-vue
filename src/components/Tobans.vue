@@ -1,34 +1,15 @@
 <template>
-  <div class="toban-example">
-    <div>
-      <table>
-        <!-- テーブルヘッダー -->
-        <thead>
-          <tr>
-            <th class="id">ID</th>
-            <th class="name">名前</th>
-            <th class="description">概要</th>
-            <th class="button">有効</th>
-            <th class="button">削除</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="toban in tobans" v-bind:key="toban.id">
-            <th>{{ toban.id }}</th>
-            <td>{{ toban.name }}</td>
-            <td>{{ toban.description }}</td>
-            <td class="state">
-              <!-- 状態変更ボタンのモック -->
-              <button v-if="toban.enabled">enabled</button>
-              <button v-else>disabled</button>
-            </td>
-            <td>
-              <button class="button__delete" v-on:click="deleteToban(toban)" />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <div class="tobans-container">
+    <ul class="toban-list">
+      <li v-for="toban in tobans" v-bind:key="toban.id" class="toban-list__item">
+        <div>{{ toban.name }}</div>
+        <div class="toban-list__item__action">
+            <button v-if="toban.enabled">有効</button>
+            <button v-else>無効</button>
+            <button>編集</button>
+        </div>
+      </li>
+    </ul>
 
     <ApolloMutation
       :mutation="require('../graphql/CreateToban.gql')"
@@ -56,7 +37,7 @@
 </template>
 
 <script>
-import TOBANS from "../graphql/Tobans.gql";
+import GET_TOBANS from "../graphql/Tobans.gql";
 import DELETE_TOBAN from "../graphql/DeleteToban.gql";
 
 export default {
@@ -68,7 +49,7 @@ export default {
 
   apollo: {
     tobans: {
-      query: TOBANS
+      query: GET_TOBANS
     }
   },
 
@@ -79,6 +60,9 @@ export default {
   },
 
   methods: {
+    /** 
+    /* 指定した当番を削除する
+     */
     deleteToban: function(toban) {
       console.log(toban);
       this.$apollo
@@ -97,12 +81,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/* reset css */
+/* ここから reset css */
 button {
   border: none;
   background: none;
   cursor: pointer;
 }
+ul {
+  margin: 0;
+  padding: 0;
+}
+/* ここまで reset css */
 
 .input,
 .apollo,
@@ -121,17 +110,37 @@ label {
   margin-bottom: 6px;
 }
 
-.error {
-  color: red;
+.tobans-container {
+  width: 100%;
+  padding: 16px 24px;
+  box-sizing: border-box;
 }
 
-.button__delete {
-  background: url("../assets/icon/delete-24px.svg");
-  width: 24px;
-  height: 24px;
+.toban-list {
+  &__item {
+    display: flex;  
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: 8px 0;
 
-  &:hover {
-    opacity: 0.5;
+    &__action {
+      width: 100px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
   }
 }
+
+// ゴミ箱アイコン
+// .button__delete {
+//   background: url("../assets/icon/delete-24px.svg");
+//   width: 24px;
+//   height: 24px;
+
+//   &:hover {
+//     opacity: 0.5;
+//   }
+// }
 </style>

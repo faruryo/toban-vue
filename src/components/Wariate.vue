@@ -1,5 +1,5 @@
 <template>
-  <div class="weekly">
+  <div class="wariate-container">
     Comming Soon ...
   </div>
 </template>
@@ -10,12 +10,7 @@ export default {
     return {
     };
   },
-
-  apollo: {
-    tobans: {
-    }
-  },
-
+  
   computed: {
   },
 
@@ -26,4 +21,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.wariate-container {
+  width: 100%;
+}
 </style>
