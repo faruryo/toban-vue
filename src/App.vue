@@ -6,9 +6,11 @@
         <div class="main-tab__item" @click="selectTab($event, WARIATE)">わりあて</div>
         <div class="main-tab__item on" @click="selectTab($event, TOBANS)">当番一覧</div>
         <div class="main-tab__item" @click="selectTab($event, MEMBER)">メンバー</div>
+        <div class="main-tab__item" @click="selectTab($event, SANDBOX)">sandbox</div>
       </div>
       <Wariate v-show="tab === WARIATE" />
       <Tobans v-show="tab === TOBANS" />
+      <Sandbox v-show="tab === SANDBOX" />
     </div>
   </div>
 </template>
@@ -16,12 +18,14 @@
 <script>
 import Tobans from "./components/Tobans.vue";
 import Wariate from "./components/Wariate.vue";
+import Sandbox from "./components/Sandbox.vue";
 
 export default {
   name: "App",
   components: {
     Tobans,
-    Wariate
+    Wariate,
+    Sandbox,
   },
   data() {
     return {
@@ -29,6 +33,7 @@ export default {
       WARIATE: "wariate",
       TOBANS: "tobans",
       MEMBER: "member",
+      SANDBOX: "sandbox",
 
       // 現在選択中のタブ
       tab: null,
@@ -70,10 +75,26 @@ export default {
   align-items: center;
 }
 
-.main-container {
-  width: 800px;
+@media screen and (max-width: 767px) {
+  // SP用
+  .main-container {
+    width: 100vw;
+    padding: 8px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+  }
 }
 
+@media screen and (min-width: 768px) {
+  // PC用
+  .main-container {
+    width: 800px;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+}
+ 
 .main-tab {
   display: flex;
   flex-direction: row;
