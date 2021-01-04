@@ -1,30 +1,15 @@
 <template>
   <div class="tobans-container">
-    <div>
-      <table>
-        <!-- テーブルヘッダー -->
-        <thead>
-          <tr>
-            <th class="name">toban</th>
-            <th class="button"></th>
-            <th class="button"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="toban in tobans" v-bind:key="toban.id">
-            <td>{{ toban.name }}</td>
-            <td class="state">
-              <!-- 状態変更ボタンのモック -->
-              <button v-if="toban.enabled">有効</button>
-              <button v-else>無効</button>
-            </td>
-            <td>
-              <button>削除</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <ul class="toban-list">
+      <li v-for="toban in tobans" v-bind:key="toban.id" class="toban-list__item">
+        <div>{{ toban.name }}</div>
+        <div class="toban-list__item__action">
+            <button v-if="toban.enabled">有効</button>
+            <button v-else>無効</button>
+            <button>編集</button>
+        </div>
+      </li>
+    </ul>
 
     <ApolloMutation
       :mutation="require('../graphql/CreateToban.gql')"
@@ -96,12 +81,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/* reset css */
+/* ここから reset css */
 button {
   border: none;
   background: none;
   cursor: pointer;
 }
+ul {
+  margin: 0;
+  padding: 0;
+}
+/* ここまで reset css */
 
 .input,
 .apollo,
@@ -122,6 +112,25 @@ label {
 
 .tobans-container {
   width: 100%;
+  padding: 16px 24px;
+  box-sizing: border-box;
+}
+
+.toban-list {
+  &__item {
+    display: flex;  
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: 8px 0;
+
+    &__action {
+      width: 100px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
 }
 
 // ゴミ箱アイコン
