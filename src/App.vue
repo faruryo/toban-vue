@@ -1,43 +1,43 @@
 <template>
   <div id="app">
-    <h1>402 Toban</h1>
+    <Title>402 Toban</Title>
     <div class="main-container">
-      <div class="main-tab">
-        <div class="main-tab__item" @click="selectTab($event, WARIATE)">わりあて</div>
-        <div class="main-tab__item on" @click="selectTab($event, TOBANS)">当番一覧</div>
-        <div class="main-tab__item" @click="selectTab($event, MEMBER)">メンバー</div>
-      </div>
-      <Wariate v-show="tab === WARIATE" />
-      <Tobans v-show="tab === TOBANS" />
+      <Tab :selectTab="selectTab" />
+      <Wariate v-show="tabState === WARIATE" />
+      <Tobans v-show="tabState === TOBANS" />
     </div>
   </div>
 </template>
 
 <script>
+import Title from "./components/topView/Title.vue";
+import Tab from "./components/topView/Tab.vue";
 import Tobans from "./components/Tobans.vue";
 import Wariate from "./components/Wariate.vue";
 
 export default {
   name: "App",
   components: {
+    Title,
+    Tab,
     Tobans,
-    Wariate
+    Wariate,
   },
   data() {
     return {
       // 定数
-      WARIATE: "wariate",
-      TOBANS: "tobans",
-      MEMBER: "member",
+      WARIATE: "WARIATE",
+      TOBANS: "TOBANS",
+      MEMBER: "MEMBER",
 
       // 現在選択中のタブ
-      tab: null,
+      tabState: null,
     };
   },
   methods: {
     selectTab($event, tabName) {
       // コンテンツ内容を切り替える
-      this.tab = tabName;
+      this.tabState = tabName;
 
       // タブの見た目を切り替える
       const tabs = document.getElementsByClassName("main-tab__item");
@@ -45,12 +45,11 @@ export default {
         tabs[i].classList.remove("on");
       }
       $event.target.classList.add("on");
-      // console.log($event);
     }
   },
   mounted() {
     // デフォルト表示のタブ設定
-    this.tab = this.TOBANS;
+    this.tabState = this.TOBANS;
   }
 };
 </script>
@@ -72,27 +71,5 @@ export default {
 
 .main-container {
   width: 800px;
-}
-
-.main-tab {
-  display: flex;
-  flex-direction: row;
-  cursor: pointer;
-  border-bottom: solid 1px #888;
-  width: 100%;
-
-  &__item {
-    border: solid 1px #bbb;
-        border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    padding: 8px;
-    background-color: #fff;
-    color: #666;
-  }
-}
-
-.on {
-  background-color: #888;
-  color: #fff;
 }
 </style>
