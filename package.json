@@ -10,7 +10,7 @@
   "dependencies": {
     "core-js": "3.17.1",
     "vue": "2.6.14",
-    "vue-apollo": "3.0.7"
+    "vue-apollo": "3.0.8"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "4.5.13",
