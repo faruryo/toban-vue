@@ -41,7 +41,7 @@ COPY . .
 RUN npm run build
 
 # ---------------------------------------------------------
-FROM nginx:1.23.4-alpine as production
+FROM nginx:1.24.0-alpine as production
 
 WORKDIR /app
 COPY --from=build /app/dist /etc/nginx/html
