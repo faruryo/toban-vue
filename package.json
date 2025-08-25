@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "core-js": "3.44.0",
-    "vue": "2.7.16",
+    "vue": "3.5.20",
     "vue-apollo": "3.1.2"
   },
   "devDependencies": {
